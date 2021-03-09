@@ -1,9 +1,9 @@
-import os
 from datetime import datetime as dt
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import os
 from werkzeug.utils import import_string
 
 from auth import requires_auth
@@ -215,7 +215,6 @@ def no_result_found(error):
         "error": 404,
         "message": 'No resource found'
         }), 404
-
 
 
 if __name__ == '__main__':
