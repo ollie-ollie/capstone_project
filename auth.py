@@ -7,9 +7,9 @@ from urllib.request import urlopen
 from exceptions import AuthError
 
 
-AUTH0_DOMAIN = 'ollie-ollie.eu.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'castingagencyapi'
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+ALGORITHMS = [os.getenv('ALGORITHMS')]
+API_AUDIENCE = os.getenv('API_AUDIENCE')
 
 # Auth Header
 
