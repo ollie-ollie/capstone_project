@@ -2,6 +2,7 @@ import json
 from flask import request
 from functools import wraps
 from jose import jwt
+import os
 from urllib.request import urlopen
 
 from exceptions import AuthError
