@@ -1,0 +1,9 @@
+flask
+flask-cors
+flask-migrate
+flask-script
+flask-sqlalchemy
+psycopg2-binary
+pytest
+python-jose-cryptodome
+werkzeug
