@@ -3,13 +3,24 @@ from app import db
 
 actor_movies = db.Table(
     'actor_movies',
-    db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'), primary_key=True),
-    db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'), primary_key=True)
+    db.Column(
+        'actor_id',
+        db.Integer,
+        db.ForeignKey('actors.id'),
+        primary_key=True
+    ),
+    db.Column(
+        'movie_id',
+        db.Integer,
+        db.ForeignKey('movies.id'),
+        primary_key=True
+    )
 )
+
 
 class Movie(db.Model):
     __tablename__ = 'movies'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(), nullable=False)
     release_date = db.Column(db.DateTime, nullable=False)
@@ -74,4 +85,3 @@ class Actor(db.Model):
             'age': self.age,
             'movies': [movie.title for movie in self.movies]
         }
-

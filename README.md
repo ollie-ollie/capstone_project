@@ -1,8 +1,15 @@
 # Casting Agency app
 
+This repository provides the backbone for the backend of a casting agency application. The application is served by a database that stores information on actors/actress and movies. Two types of user have access to the application beyond the public homepage: agents and directors.
+
+
+The purpose of this app is to demonstrate newly acquired skills to develop a simple app with the Flask micro-framework. It requires Python 3.6 or higher.
+
 The app is currently deployed on Heroku, you can access it at https://castag-herokuapp.herokuapp.com/.
 
 ## Authorization
+
+Authorization is provided through the third-party service **Auth0**. 
 
 You need a valid token to access the app's API (except for the one public endpoint), for one of the two existing roles: **casting director**, or **casting agent**. The director has access to all the endpoints, and the agent can only retrieve information about actors.
 Valid tokens for each of these roles are currently included in the `setup.sh` file for the project validation. They are to be exported as environment variables when the app is tested locally.

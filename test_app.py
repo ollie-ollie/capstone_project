@@ -252,3 +252,7 @@ class TestCastingAgency(unittest.TestCase):
         self.assertEqual(res.status_code, 403)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Permission not found.')
+
+
+if __name__ == 'main':
+    unittest.main()
