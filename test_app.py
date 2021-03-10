@@ -18,7 +18,7 @@ class TestCastingAgency(unittest.TestCase):
         db.drop_all()
         db.create_all()
 
-        self.body_actor={
+        self.body_actor = {
             'name': 'Aacc',
             'age': 30,
             'gender': 'Female'
@@ -57,7 +57,10 @@ class TestCastingAgency(unittest.TestCase):
 
     def test_get_actor_if_success(self):
         with self.subTest('test when user is director'):
-            res = self.client().get('/actors/1', headers=self.auth_header_director)
+            res = self.client().get(
+                '/actors/1',
+                headers=self.auth_header_director
+            )
             data = json.loads(res.data)
             print(data)
             self.assertEqual(res.status_code, 200)
@@ -65,7 +68,10 @@ class TestCastingAgency(unittest.TestCase):
             self.assertTrue('actor' in data)
 
         with self.subTest('test when is agent'):
-            res = self.client().get('/actors/1', headers=self.auth_header_agent)
+            res = self.client().get(
+                '/actors/1',
+                headers=self.auth_header_agent
+            )
             data = json.loads(res.data)
 
             self.assertEqual(res.status_code, 200)
@@ -73,7 +79,10 @@ class TestCastingAgency(unittest.TestCase):
             self.assertTrue('actor' in data)
 
     def test_get_actor_if_failure_actor_not_found(self):
-        res = self.client().get('/actors/100', headers=self.auth_header_director)
+        res = self.client().get(
+            '/actors/100',
+            headers=self.auth_header_director
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -89,7 +98,10 @@ class TestCastingAgency(unittest.TestCase):
         self.assertEqual(data['message'], 'Authorization header is expected.')
 
     def test_get_movie_if_success(self):
-        res = self.client().get('/movies/1', headers=self.auth_header_director)
+        res = self.client().get(
+            '/movies/1',
+            headers=self.auth_header_director
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -97,15 +109,21 @@ class TestCastingAgency(unittest.TestCase):
         self.assertTrue('movie' in data)
 
     def test_get_movie_if_failure_movie_not_found(self):
-        res = self.client().get('/movies/100', headers=self.auth_header_director)
+        res = self.client().get(
+            '/movies/100',
+            headers=self.auth_header_director
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'No resource found')
-       
+
     def test_get_movie_if_failure_no_permission(self):
-        res = self.client().get('/movies/1', headers=self.auth_header_agent)
+        res = self.client().get(
+            '/movies/1',
+            headers=self.auth_header_agent
+        )
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 403)
@@ -114,7 +132,7 @@ class TestCastingAgency(unittest.TestCase):
 
     def test_create_actor_if_success(self):
         res = self.client().post(
-            '/actors', 
+            '/actors',
             headers=self.auth_header_director,
             json=self.body_actor
         )
@@ -122,10 +140,10 @@ class TestCastingAgency(unittest.TestCase):
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-    
+
     def test_create_actor_if_failure_wrong_request_body(self):
         res = self.client().post(
-            '/actors', 
+            '/actors',
             headers=self.auth_header_director,
             json={}
         )
@@ -134,13 +152,13 @@ class TestCastingAgency(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertEqual(
-            data['message'], 
+            data['message'],
             'Request body was empty or valid keys are missing'
         )
 
     def test_create_actor_if_failure_no_permission(self):
         res = self.client().post(
-            '/actors', 
+            '/actors',
             headers=self.auth_header_agent,
             json=self.body_actor
         )
@@ -152,7 +170,7 @@ class TestCastingAgency(unittest.TestCase):
 
     def test_patch_actor_if_success(self):
         res = self.client().patch(
-            '/actors/1', 
+            '/actors/1',
             headers=self.auth_header_director,
             json={'name': 'other name'}
         )
@@ -163,7 +181,7 @@ class TestCastingAgency(unittest.TestCase):
 
     def test_patch_actor_if_failure_wrong_body(self):
         res = self.client().patch(
-            '/actors/1', 
+            '/actors/1',
             headers=self.auth_header_director,
             json={}
         )
@@ -172,13 +190,13 @@ class TestCastingAgency(unittest.TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data['success'], False)
         self.assertEqual(
-            data['message'], 
+            data['message'],
             'Request body was empty or valid keys are missing'
         )
-    
+
     def test_patch_actor_if_failure_not_found(self):
         res = self.client().patch(
-            '/actors/100', 
+            '/actors/100',
             headers=self.auth_header_director,
             json={'name': 'other name'}
         )
@@ -189,10 +207,9 @@ class TestCastingAgency(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'No resource found')
 
-
     def test_patch_actor_if_failure_no_permission(self):
         res = self.client().patch(
-            '/actors/1', 
+            '/actors/1',
             headers=self.auth_header_agent,
             json=self.body_actor
         )
@@ -224,15 +241,14 @@ class TestCastingAgency(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'No resource found')
-    
+
     def test_delete_actor_if_failure_no_permission(self):
         res = self.client().delete(
             '/actors/1',
             headers=self.auth_header_agent
         )
-        data = json.loads(res.data)    
+        data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 403)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Permission not found.')
-        

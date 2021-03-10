@@ -1,4 +1,3 @@
-from datetime import datetime as dt
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -49,6 +48,7 @@ def after_request(response):
 # Routes.
 #----------------------------------------------------------------------------#
 
+
 @app.route('/', methods=['GET'])
 def index():
     recent_movies = Movie.query.order_by(Movie.id.desc()).limit(10).all()
@@ -60,6 +60,7 @@ def index():
         'movies': [movie.serialize() for movie in recent_movies]
     })
 
+
 @app.route('/actors/<int:actor_id>', methods=['GET'])
 @requires_auth(permission='read:actor')
 def get_actor(payload, actor_id):
@@ -70,6 +71,7 @@ def get_actor(payload, actor_id):
         'actor': actor.serialize()
     })
 
+
 @app.route('/movies/<int:movie_id>', methods=['GET'])
 @requires_auth(permission='read:movie')
 def get_movie(payload, movie_id):
@@ -79,6 +81,7 @@ def get_movie(payload, movie_id):
         'success': True,
         'movie': movie.serialize()
     })
+
 
 @app.route('/actors', methods=['POST'])
 @requires_auth(permission='create:actor')
@@ -95,18 +98,19 @@ def create_actor(payload):
         actor.insert()
 
         return jsonify({
-        'success': True
-    })
-    
+            'success': True
+        })
+
     except Exception:
         abort(422)
+
 
 @app.route('/actors/<int:actor_id>', methods=['PATCH'])
 @requires_auth(permission='update:actor')
 def update_actor(payload, actor_id):
     body = request.get_json()
     validate_patch_request_body_actor(body)
-    
+
     actor = Actor.query.filter(Actor.id == actor_id).one()
 
     try:
@@ -119,11 +123,12 @@ def update_actor(payload, actor_id):
         actor.update()
 
         return jsonify({
-        'success': True
+            'success': True
         })
 
     except Exception:
         abort(422)
+
 
 @app.route('/actors/<int:actor_id>', methods=['DELETE'])
 @requires_auth(permission='delete:actor')
@@ -134,7 +139,7 @@ def delete_actor(payload, actor_id):
         actor.delete()
 
         return jsonify({
-            'success':True,
+            'success': True,
             'deleted': actor_id
         })
 
@@ -144,6 +149,7 @@ def delete_actor(payload, actor_id):
 #----------------------------------------------------------------------------#
 # Error handlers.
 #----------------------------------------------------------------------------#
+
 
 @app.errorhandler(422)
 def unprocessable(error):

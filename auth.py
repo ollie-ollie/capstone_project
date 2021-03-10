@@ -14,6 +14,7 @@ API_AUDIENCE = os.getenv('API_AUDIENCE')
 
 # Auth Header
 
+
 def get_token_auth_header():
     auth = request.headers.get('Authorization', None)
 
